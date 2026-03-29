@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+    <h1>Admin Dashboard</h1>
+    <p class="page-subtitle">Manage categorized medical files, edit labels, and remove outdated records.</p>
+</section>
+
+<div class="actions-row">
+    <a href="/admin/upload" class="btn btn-primary">Upload File</a>
+</div>
+
+<section class="card">
+    <% if (!files || files.length === 0) { %>
+        <p class="empty-state">No files uploaded yet. Add your first file to populate the dashboard.</p>
+    <% } else { %>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Category</th>
+                    <th>Upload Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% files.forEach(file => { %>
+                    <% const parsedDate = file.uploadDate ? new Date(file.uploadDate) : null; %>
+                    <tr>
+                        <td data-label="File"><%= file.name %></td>
+                        <td data-label="Category">
+                            <span class="category-pill"><%= file.category || 'General Records' %></span>
+                        </td>
+                        <td data-label="Upload Date">
+                            <%= parsedDate && !isNaN(parsedDate.getTime()) ? parsedDate.toDateString() : 'Unknown date' %>
+                        </td>
+                        <td data-label="Actions">
+                            <div class="actions-group">
+                                <a href="/file/<%= file._id %>" class="btn btn-secondary btn-small">View</a>
+                                <a href="/admin/edit/<%= file._id %>" class="btn btn-secondary btn-small">Edit</a>
+                                <a
+                                    href="/admin/delete/<%= file._id %>"
+                                    class="btn btn-danger btn-small"
+                                    onclick="return confirm('Delete this file?');"
+                                >
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</section>
+
+<%- include('../partials/footer') %>

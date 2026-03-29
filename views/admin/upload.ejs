@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+    <h1>Upload Medical File</h1>
+    <p class="page-subtitle">Add reports, prescriptions, scans, and records with a category for easy lookup.</p>
+</section>
+
+<section class="card">
+    <form action="/admin/upload" method="POST" enctype="multipart/form-data" class="upload-card">
+        <label for="imageName">File Name</label>
+        <input
+            id="imageName"
+            class="file-input"
+            type="text"
+            name="imageName"
+            placeholder="e.g. blood-test-march"
+            required
+        >
+        <label for="category">Category</label>
+        <select id="category" class="file-input" name="category" required>
+            <% categories.forEach(category => { %>
+                <option value="<%= category %>"><%= category %></option>
+            <% }) %>
+        </select>
+        <label for="file">Choose Medical File</label>
+        <input id="file" class="file-input" type="file" name="file" accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.txt" required>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</section>
+
+<%- include('../partials/footer') %>

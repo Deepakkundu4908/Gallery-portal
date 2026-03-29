@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+    <h1><%= file.name %></h1>
+    <p class="page-subtitle">Detailed view for this medical record.</p>
+</section>
+
+<section class="card">
+    <% if (file.isImage) { %>
+        <img src="<%= file.publicUrl %>" alt="<%= file.name %>" class="file-image">
+    <% } else { %>
+        <div class="file-graphic detail-graphic">
+            <span class="file-graphic-label"><%= file.extension.toUpperCase() %></span>
+        </div>
+    <% } %>
+    <p>
+        Uploaded on:
+        <strong><%= file.uploadedDateLabel %></strong>
+    </p>
+    <p>
+        Category:
+        <strong><%= file.category %></strong>
+    </p>
+    <div class="actions-group">
+        <a href="<%= file.publicUrl %>" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Open File</a>
+        <a href="/" class="btn btn-primary">Back to Gallery</a>
+    </div>
+</section>
+
+<%- include('../partials/footer') %>

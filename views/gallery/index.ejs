@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+    <h1>Medical Gallery Portal</h1>
+    <p class="page-subtitle">Browse categorized medical records in a clean and responsive view.</p>
+</section>
+
+<section class="filters-row">
+    <% const encodedSearch = currentSearch ? encodeURIComponent(currentSearch) : ''; %>
+    <% categories.forEach(category => { %>
+        <% const queryPrefix = category === 'All' ? '?' : '?category=' + encodeURIComponent(category); %>
+        <% const searchPart = encodedSearch ? (queryPrefix === '?' ? 'q=' + encodedSearch : '&q=' + encodedSearch) : ''; %>
+        <a
+            href="/<%= queryPrefix === '?' && !searchPart ? '' : queryPrefix + searchPart %>"
+            class="filter-pill <%= selectedCategory === category ? 'active' : '' %>"
+        >
+            <%= category %>
+        </a>
+    <% }) %>
+</section>
+
+<% if (!files || files.length === 0) { %>
+    <section class="card">
+        <p class="empty-state">No files matched your current category/search. Try another keyword or category.</p>
+    </section>
+<% } else { %>
+    <div class="gallery">
+        <% files.forEach(file => { %>
+            <article class="gallery-item">
+                <a href="/file/<%= file._id %>">
+                    <% if (file.isImage) { %>
+                        <img src="<%= file.publicUrl %>" alt="<%= file.name %>">
+                    <% } else { %>
+                        <div class="file-graphic">
+                            <span class="file-graphic-label"><%= file.extension.toUpperCase() %></span>
+                        </div>
+                    <% } %>
+                    <div class="gallery-caption">
+                        <div class="file-name"><%= file.name %></div>
+                        <div class="file-meta">
+                            <span class="category-pill"><%= file.category %></span>
+                            <span class="date-chip"><%= file.uploadedDateLabel %></span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+        <% }) %>
+    </div>
+<% } %>
+
+<%- include('../partials/footer') %>
